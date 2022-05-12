@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id Int @id @default(autoincrement())
+  firstName String
+  lastName String
+  email String
+  uniqueNumber String
+  password String
+  departmentId Int
+  schoolId Int
+  courses Course[]
+  role Role @default(STUDENT)
+  access_token String?
+  createdAt DateTime @default(now())
+  modifiedAt DateTime @default(now())
+}
+
+model Course {
+  id Int @id @default(autoincrement())
+  courseCode String
+  courseDesc String @db.LongText
+  courseName String
+  departmentId Int
+  schoolId Int
+  userId Int
+  courseMaterial CourseMaterial[]
+  lecturer User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  modifiedAt DateTime @default(now())
+}
+
+model CourseMaterial {
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  fileId Int?
+  courseId Int
+  course Course @relation(fields: [courseId], references: [id])
+  file File? @relation(fields: [fileId], references: [id])
+}
+
+model File {
+  id Int @id @default(autoincrement())
+  fileName String
+  url String
+  courseMaterialId Int?
+  courseMaterial CourseMaterial?
+  createdAt DateTime @default(now())
+}
+
+model FileDownload {
+  id Int @id @default(autoincrement())
+  studentId String
+  fileId String
+}
+
+model School {
+  id Int @id @default(autoincrement())
+  schoolName String
+  createdAt DateTime @default(now())
+}
+
+model Department {
+  id Int @id @default(autoincrement())
+  DepartmentName String
+  createdAt DateTime @default(now())
+}
+
+model Admin {
+  id Int @id @default(autoincrement())
+  username String
+  password String
+  school String
+  department String
+}
+enum Role {
+ STUDENT
+ LECTURER
+}
