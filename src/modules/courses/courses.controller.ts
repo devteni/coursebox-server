@@ -3,9 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
   UseGuards,
   Request,
   ParseIntPipe,
@@ -61,13 +59,13 @@ export class CoursesController {
   }
 
   @Roles(Role.STUDENT)
-  @Post('student/downloads')
+  @Post('students/downloads')
   async addDownload(@Body() payload: any) {
     return await this.coursesService.addDownload(payload);
   }
 
   @Roles(Role.LECTURER)
-  @Get('student/downloads/:fileId')
+  @Get('students/downloads/:fileId')
   async fetchDownloadCount(@Param('fileId') fileId: string) {
     return await this.coursesService.fetchDownloadCount(fileId);
   }

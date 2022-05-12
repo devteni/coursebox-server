@@ -98,8 +98,8 @@ export class CoursesService {
   async addDownload(payload: AddDownloadDto) {
     const existingDownload = await this.prisma.fileDownload.findFirst({
       where: {
-        fileId: payload.fileId,
-        studentId: payload.studentId,
+        fileId: payload.fileId.toString(),
+        studentId: payload.studentId.toString(),
       },
     });
     if (existingDownload) {
@@ -107,8 +107,8 @@ export class CoursesService {
     } else {
       await this.prisma.fileDownload.create({
         data: {
-          fileId: payload.fileId,
-          studentId: payload.studentId,
+          fileId: payload.fileId.toString(),
+          studentId: payload.studentId.toString(),
         },
       });
       return true;
